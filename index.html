@@ -1,0 +1,85 @@
+[2:32 pm, 02/02/2022] Sunith @ivy. Teams:
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+</head>
+
+<body>
+    <h1 id="numCountDown"></h1>
+    <input type="button" value="start" id="btn-start">
+    <input type="button" value="stop" id="btn-stop">
+    <input type="button" value="reset" id="btn-reset">
+
+    <script>
+
+        const event = document.createEvent('Event');
+        event.initEvent('countdown', true, true);
+
+        document.addEventListener('countdown', function (e) {
+            numTimeElapsed = 0;
+            console.log("countdown done");
+        }, false);
+
+        let numTotalTime = 5;
+        let numTimeElapsed = 0;
+        let countDownInterval;
+        let hasCountDownStarted = false;
+
+        let btnStart = document.getElementById("btn-start");
+        let btnStop = document.getElementById("btn-stop");
+        let btnReset = document.getElementById("btn-reset");
+
+        let numCountDown = document.getElementById("numCountDown");
+        numCountDown.innerHTML = numTotalTime;
+
+        btnStart.addEventListener("click", startCountDown);
+        btnStop.addEventListener("click", stopCountDown);
+        btnReset.addEventListener("click", resetCountDown);
+
+        //init
+
+        btnStop.style.display = 'none';
+
+        function resetCountDown() {
+            numCountDown.innerHTML = numTotalTime;
+            numTimeElapsed = 0;
+            stopCountDown();
+        }
+
+        function stopCountDown() {
+            hasCountDownStarted = true;
+            btnStart.style.display = 'inline';
+            clearInterval(countDownInterval);
+        }
+
+        function startCountDown() {
+            if (!hasCountDownStarted) {
+                hasCountDownStarted = true;
+                btnStop.style.display = 'inline';
+                btnStart.style.display = 'none';
+            }
+            else {
+                stopCountDown();
+                return;
+            }
+            countDownInterval = setInterval(() => {
+                numTimeElapsed++;
+                numCountDown.innerHTML = numTotalTime - numTimeElapsed;
+                if (numTotalTime === numTimeElapsed) {
+                    document.dispatchEvent(event);
+                    clearInterval(countDownInterval);
+                }
+            }, 1000);
+        }
+
+
+
+    </script>
+</body>
+
+</html>
